@@ -1,0 +1,81 @@
+{
+    "form-config-1": {
+        "pages": [
+            {
+                "questions": [
+                    {
+                        "label": "simple input field",
+                        "input": {
+                            "validation_regex": "^\\d{10}$",
+                            "value": ""
+                        },
+                        "required": true,
+                        "error_message": "Please enter 10 digit mobile number",
+                        "id": "p1f1"
+                    },
+                    {
+                        "label": "simple number field",
+                        "input": {
+                            "validation_regex": "",
+                            "value": ""
+                        },
+                        "required": false,
+                        "error_message": "",
+                        "id": "p1f2"
+                    },
+                    {
+                        "label": "simple selection field",
+                        "input": {
+                            "options": [
+                                {
+                                    "text": "option 1",
+                                    "isChecked": false,
+                                    "id": "p1f3o1"
+                                },
+                                {
+                                    "text": "option 2",
+                                    "isChecked": false,
+                                    "id": "p1f3o2"
+                                },
+                                {
+                                    "text": "option 3",
+                                    "isChecked": false,
+                                    "id": "p1f3o3"
+                                }
+                            ],
+                            "minRequiredSelection": 1
+                        },
+                        "required": false,
+                        "error_message": "select at least one",
+                        "id": "p1f3"
+                    }
+                ]
+            },
+            {
+                "questions": [
+                    {
+                        "label": "simple input field",
+                        "input": {
+                            "validation_regex": "",
+                            "value": ""
+                        },
+                        "required": false,
+                        "error_message": "",
+                        "id": "p2f1"
+                    },
+                    {
+                        "label": "simple number field",
+                        "input": {
+                            "validation_regex": "",
+                            "value": ""
+                        },
+                        "required": false,
+                        "error_message": "",
+                        "id": "p2f2"
+                    }
+                ]
+            }
+        ],
+        "timeout": 0
+    }
+}
