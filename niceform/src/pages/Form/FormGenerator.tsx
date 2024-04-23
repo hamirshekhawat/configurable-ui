@@ -21,7 +21,7 @@ interface IFormFieldProps {
   isFormFieldValid: boolean;
 }
 
-export const FormFieldComponent = (formFieldData: IFormFieldProps) => {
+export const FormFieldInputComponent = (formFieldData: IFormFieldProps) => {
   const {
     formField,
     onDataChange: setFormData,
@@ -81,7 +81,11 @@ export const FormFieldComponent = (formFieldData: IFormFieldProps) => {
                   setIsInputValid(
                     !(
                       data[formField.id].length <
-                      (formField.input as MultiSelectField).minRequiredSelection
+                        (formField.input as MultiSelectField)
+                          .minRequiredSelection ||
+                      data[formField.id].length >
+                        (formField.input as MultiSelectField)
+                          .maxRequiredSelection
                     )
                   );
                 }
@@ -91,6 +95,28 @@ export const FormFieldComponent = (formFieldData: IFormFieldProps) => {
             {option.text}
           </label>
         ))}
+        {input.showCustomInput && (
+          <input
+            type="text"
+            value={input.customInputValue ?? ""}
+            onChange={(e) => {
+              input.customInputValue = e.target.value;
+              const data = getFormDataFromField(formField);
+              if (data) {
+                setIsInputValid(
+                  !(
+                    data[formField.id].length <
+                      (formField.input as MultiSelectField)
+                        .minRequiredSelection ||
+                    data[formField.id].length >
+                      (formField.input as MultiSelectField).maxRequiredSelection
+                  )
+                );
+              }
+              setFormData(data);
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -122,7 +148,7 @@ const PageComponent = (pageData: IPageProps) => {
     showPreviousBtn,
   } = pageData;
 
-  const [inValidPages, setInvalidPages] = useState(new Set<String>());
+  const [inValidPageFields, setInvalidPageFields] = useState(new Set<String>());
 
   return (
     <div style={{ overflowY: "scroll" }}>
@@ -130,17 +156,17 @@ const PageComponent = (pageData: IPageProps) => {
         onSubmit={(e) => {
           e.preventDefault();
           const invalidPagesSet = checkPageDataValid(page);
-          setInvalidPages(invalidPagesSet);
+          setInvalidPageFields(invalidPagesSet);
           if (invalidPagesSet.size === 0) onPageSuccess();
         }}
       >
         {page.questions.map((formField, index) => {
           return (
             <span>
-              <FormFieldComponent
+              <FormFieldInputComponent
                 formField={formField}
                 onDataChange={setFormData}
-                isFormFieldValid={!inValidPages.has(formField.id)}
+                isFormFieldValid={!inValidPageFields.has(formField.id)}
               />
             </span>
           );
@@ -183,7 +209,7 @@ export const NiceFormComponent = (props: IFormProps) => {
     <div>
       <PageComponent
         page={form.pages[currentPage]}
-        isLastPage={currentPage == form.pages.length - 1}
+        isLastPage={currentPage === form.pages.length - 1}
         showPreviousBtn={currentPage > 0}
         setFormData={updateFormData}
         onPageSuccess={handleNext}

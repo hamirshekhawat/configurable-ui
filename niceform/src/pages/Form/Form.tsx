@@ -1,64 +1,56 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { NiceFormComponent } from "./FormGenerator";
 import { NiceForm } from "../../types/form";
 import { getFilledFormById, getFormById } from "../../api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { clearForm } from "../../utils/form_utils";
 
-function Form() {
-  const [form, setFormData] = useState<NiceForm>();
-  let { id } = useParams();
-  const navigate = useNavigate();
-  let timer: NodeJS.Timeout | undefined = undefined;
+const Form = () => {
+  const [form, setFormData] = useState<NiceForm | null>();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const { id } = useParams();
 
-  function updateFormData(response: any) {
-    try {
-      if (response.status === 200) {
-        const formJson = response.data["formJson"];
-        let form: NiceForm = JSON.parse(JSON.stringify(formJson));
-        console.log(form?.timeout);
+  const alertAndClearData = useCallback((form: NiceForm) => {
+    alert("TIMEOUT!");
+    const clearedForm = clearForm(form);
+    setFormData(clearedForm);
+  }, []);
 
-        setFormData(form);
-
-        if (form?.timeout && form?.timeout > 0) {
-          if (!timer)
-            timer = setTimeout(() => {
-              navigate("/");
-              alert("TIMEOUT!");
-            }, form?.timeout);
-
-          return () => clearTimeout(timer);
-        }
-      }
-    } catch (error) {
-      console.log("ERROR: " + error);
+  const startTimer = useCallback((timeout: number, form: NiceForm) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
-  }
+    timerRef.current = setTimeout(() => {
+      alertAndClearData(form);
+      startTimer(timeout, form);
+    }, timeout);
+  }, [alertAndClearData]);
+
+  const updateFormData = useCallback((response: any) => {
+    if (response.status === 200) {
+      const { formJson } = response.data;
+      let form: NiceForm = JSON.parse(JSON.stringify(formJson));
+      setFormData(form);
+      if (form?.timeout > 0) {
+        startTimer(form.timeout, form);
+      }
+    }
+  }, [startTimer]);
 
   useEffect(() => {
     if (id) {
-      const page = window.location.pathname;
-      const getForm = page.includes("response")
+      const getForm = window.location.pathname.includes('response')
         ? getFilledFormById
         : getFormById;
-
       getForm(id)
-        .then((response) => {
-          return updateFormData(response);
-        })
-        .catch((error) => {
-          console.log("ERROR: " + error);
-        });
+        .then(updateFormData)
+        .catch((error: Error) => console.error(`ERROR:  ${error.message}`));
     }
-  }, []);
+  }, [id, updateFormData]);
 
-  if (form && id)
-    return (
-      <div>
-        <NiceFormComponent form={form} formId={id} />
-      </div>
-    );
-
-  return <div>Form not found</div>;
+  return form && id
+    ? <NiceFormComponent form={form} formId={id} />
+    : <div>Form not found</div>;
 }
 
 export default Form;

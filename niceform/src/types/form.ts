@@ -11,7 +11,10 @@ export interface MultiSelectOption {
 
 export interface MultiSelectField {
   minRequiredSelection: number;
+  maxRequiredSelection: number;
   options: Array<MultiSelectOption>;
+  showCustomInput: boolean;
+  customInputValue?: string;
 }
 
 export interface FormField {

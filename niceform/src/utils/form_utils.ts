@@ -1,5 +1,6 @@
 import {
   FormField,
+  NiceForm,
   Page,
   isMultiSelectField,
   isTextInputField,
@@ -18,6 +19,9 @@ export const getFormDataFromField = (formField: FormField) => {
         selectedOptions.push(option.id);
       }
     });
+    if (formField.input.showCustomInput && formField.input.customInputValue) {
+      selectedOptions.push(formField.input.customInputValue);
+    }
     return { [formFieldId]: selectedOptions };
   }
 };
@@ -41,10 +45,35 @@ export const checkPageDataValid = (formPage: Page): Set<string> => {
           selectedOptionCount += 1;
         }
       });
+      if (formField.input.showCustomInput && formField.input.customInputValue) {
+        selectedOptionCount += 1;
+      }
       if (selectedOptionCount < formField.input.minRequiredSelection) {
+        invalidFormFields.add(formField.id);
+      }
+      if (selectedOptionCount > formField.input.maxRequiredSelection) {
         invalidFormFields.add(formField.id);
       }
     }
   });
   return invalidFormFields;
 };
+
+export const clearForm = (form: NiceForm) => {
+  form.pages.forEach((page) => {
+    page.questions.forEach((question) => {
+      if (isTextInputField(question.input)) {
+        question.input.value = "";
+      }
+      else if (isMultiSelectField(question.input)) {
+        if(question.input.showCustomInput) {
+          question.input.customInputValue = "";
+        }
+        question.input.options.forEach((option) => {
+          option.isChecked = false;
+        })
+      }
+    })
+  });
+  return {...form};
+}

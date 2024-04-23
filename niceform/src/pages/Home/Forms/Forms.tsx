@@ -35,8 +35,6 @@ function Home() {
         ))}
     </div>
   );
-
-  return <div>Hello world</div>;
 }
 
 export default Home;

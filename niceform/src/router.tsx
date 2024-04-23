@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import "./index.css";
 import Form from "./pages/Form/Form";
 import Home from "./pages/Home/Forms/Forms";
-import FilledForms from "./pages/FormFilled.tsx/FilledForms";
+import FilledForms from "./pages/FormFilled/FilledForms";
 
 export const router = createBrowserRouter([
   {

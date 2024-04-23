@@ -25,7 +25,7 @@ function FilledForms() {
           console.log("ERROR: " + error);
         });
     }
-  }, []);
+  }, [id]);
 
   return (
     // <div className="home-container">

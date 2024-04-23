@@ -7,7 +7,7 @@
                         "label": "simple input field",
                         "input": {
                             "validation_regex": "^\\d{10}$",
-                            "value": "1231231231"
+                            "value": ""
                         },
                         "required": true,
                         "error_message": "Please enter 10 digit mobile number",
@@ -17,7 +17,7 @@
                         "label": "simple number field",
                         "input": {
                             "validation_regex": "",
-                            "value": "fsfas"
+                            "value": ""
                         },
                         "required": false,
                         "error_message": "",
@@ -29,12 +29,12 @@
                             "options": [
                                 {
                                     "text": "option 1",
-                                    "isChecked": true,
+                                    "isChecked": false,
                                     "id": "p1f3o1"
                                 },
                                 {
                                     "text": "option 2",
-                                    "isChecked": true,
+                                    "isChecked": false,
                                     "id": "p1f3o2"
                                 },
                                 {
@@ -43,7 +43,8 @@
                                     "id": "p1f3o3"
                                 }
                             ],
-                            "minRequiredSelection": 1
+                            "minRequiredSelection": 1,
+                            "maxRequiredSelection": 3
                         },
                         "required": false,
                         "error_message": "select at least one",
@@ -57,7 +58,7 @@
                         "label": "simple input field",
                         "input": {
                             "validation_regex": "",
-                            "value": "adfas"
+                            "value": ""
                         },
                         "required": false,
                         "error_message": "",
@@ -67,7 +68,7 @@
                         "label": "simple number field",
                         "input": {
                             "validation_regex": "",
-                            "value": "new valueee"
+                            "value": ""
                         },
                         "required": false,
                         "error_message": "",
@@ -76,7 +77,7 @@
                 ]
             }
         ],
-        "timeout": 2000
+        "timeout": 4000
     },
     "form-config-3": {
         "pages": [
@@ -156,5 +157,109 @@
             }
         ],
         "timeout": 0
+    },
+    "initial-form": {
+        "pages": [
+            {
+                "questions": [
+                    {
+                        "label": "Name",
+                        "input": {
+                            "validation_regex": "^[a-zA-Z ]+$",
+                            "value": ""
+                        },
+                        "required": true,
+                        "error_message": "Please enter valid name, only English alphabets allowed.",
+                        "id": "p1f1"
+                    },
+                    {
+                        "label": "Gender",
+                        "input": {
+                            "options": [
+                                {
+                                    "text": "Male",
+                                    "isChecked": false,
+                                    "id": "p1f3o1"
+                                },
+                                {
+                                    "text": "Female",
+                                    "isChecked": false,
+                                    "id": "p1f3o2"
+                                },
+                                {
+                                    "text": "Non binary",
+                                    "isChecked": false,
+                                    "id": "p1f3o3"
+                                }
+                            ],
+                            "minRequiredSelection": 1,
+                            "maxRequiredSelection": 1
+                        },
+                        "required": false,
+                        "error_message": "Please select only one",
+                        "id": "p1f3"
+                    },
+                    {
+                        "label": "Age",
+                        "input": {
+                            "validation_regex": "^\\d+$",
+                            "value": ""
+                        },
+                        "required": true,
+                        "error_message": "Enter valid age",
+                        "id": "p1f2"
+                    }
+                ]
+            },
+            {
+                "questions": [
+                    {
+                        "label": "Profession",
+                        "input": {
+                            "options": [
+                                {
+                                    "text": "Owner",
+                                    "isChecked": false,
+                                    "id": "p1f3o1"
+                                },
+                                {
+                                    "text": "Agent",
+                                    "isChecked": false,
+                                    "id": "p1f3o2"
+                                },
+                                {
+                                    "text": "Buyer",
+                                    "isChecked": false,
+                                    "id": "p1f3o3"
+                                },
+                                {
+                                    "text": "Seller",
+                                    "isChecked": false,
+                                    "id": "p1f3o4"
+                                }
+                            ],
+                            "minRequiredSelection": 1,
+                            "maxRequiredSelection": 1,
+                            "showCustomInput": true,
+                            "customInputValue": ""
+                        },
+                        "required": true,
+                        "error_message": "Please select one or mention your profession in text input",
+                        "id": "p2f1"
+                    },
+                    {
+                        "label": "What services do you need?",
+                        "input": {
+                            "validation_regex": "",
+                            "value": ""
+                        },
+                        "required": false,
+                        "error_message": "",
+                        "id": "p2f2"
+                    }
+                ]
+            }
+        ],
+        "timeout": 1800000
     }
 }
