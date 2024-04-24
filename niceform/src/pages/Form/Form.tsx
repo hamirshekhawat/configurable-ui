@@ -46,10 +46,15 @@ const Form = () => {
         .then(updateFormData)
         .catch((error: Error) => console.error(`ERROR:  ${error.message}`));
     }
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    }
   }, [id, updateFormData]);
 
   return form && id
-    ? <NiceFormComponent form={form} formId={id} />
+    ? <NiceFormComponent key={Math.random()} form={form} formId={id} />
     : <div>Form not found</div>;
 }
 
