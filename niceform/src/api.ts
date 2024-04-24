@@ -1,9 +1,7 @@
 import axios from "axios";
 import { NiceForm } from "./types/form";
 
-const PORT = process.env.PORT || 3001;
-
-const API_BASE_URL = `http://localhost:${PORT}/`;
+const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const getFormById = (id: string) => {
   return axios.get(API_BASE_URL + "get-form/", {
