@@ -5,10 +5,13 @@ import "./Forms.css";
 
 function Home() {
   const [formList, setForms] = useState<Array<string>>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setLoading(true);
     getAllForms()
       .then((response) => {
+        setLoading(false);
         try {
           if (response.status === 200) {
             const formsJson = response.data;
@@ -25,7 +28,8 @@ function Home() {
   return (
     <div className="home-container">
       <h1 className="page-title">Forms and their responses</h1>
-      {formList.length <= 0 && <p>No forms uwu</p>}
+      {isLoading && <p>Fetching forms</p>}
+      {!isLoading && formList.length <= 0 && <p>No forms</p>}
       {formList.length > 0 &&
         formList.map((form, index) => (
           <div className="card" key={index}>
@@ -33,6 +37,7 @@ function Home() {
             <Link to={"/responses/" + form}>Responses </Link>
           </div>
         ))}
+      {isLoading && <progress value={undefined} />}
     </div>
   );
 }
